@@ -1,9 +1,30 @@
 import React, { useState, useEffect } from "react";
 import "./Main.css";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Aos from "aos";
+import "aos/dist/aos.css";
 
 const Main = () => {
+  // useState
+  const [nightMode, setNightMode] = useState(false);
+
+  // animation aos
+  useEffect(() => {
+    Aos.init({ duration: 2000 });
+  }, []);
+
+  // toggling between night mode and light mode
+  useEffect(() => {
+    const mainContainer = document.body;
+    if (nightMode) {
+      mainContainer.classList.add("night_mode");
+      console.log("add");
+    } else {
+      mainContainer.classList.remove("night_mode");
+      console.log("remove");
+    }
+  },[nightMode]);
 
   // toaster
   const showSucessMessage = () => {
@@ -18,23 +39,21 @@ const Main = () => {
   };
   const showDeletedMessage = () => {
     toast.warning("Item Deleted !", {
-      position: toast.POSITION.TOP_LEFT,
+      position: toast.POSITION.TOP_CENTER,
     });
   };
 
-   // save data on local storage----------------------------->
-   let saveDataOnLocalStorage = (updateTask)=>{
-    localStorage.setItem("localStoreData",JSON.stringify(updateTask));
-  }
+  // save data on local storage----------------------------->
+  let saveDataOnLocalStorage = (updateTask) => {
+    localStorage.setItem("localStoreData", JSON.stringify(updateTask));
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     let savedTask = JSON.parse(localStorage.getItem("localStoreData"));
-    if(savedTask){
+    if (savedTask) {
       setAddTask(savedTask);
     }
-  },[])
-
-
+  }, []);
 
   // take user type input------------------------------------>
   let [taskText, setTaskText] = useState("");
@@ -51,10 +70,9 @@ const Main = () => {
       saveDataOnLocalStorage(newAddTask);
       setTaskText("");
       showSucessMessage();
-    }else{
+    } else {
       showFailedMessage();
     }
-    
   }
   // remove task from task list click on delet button-------------------------------------------------->
   function onClickRemoveTask(index) {
@@ -76,15 +94,35 @@ const Main = () => {
     saveDataOnLocalStorage(updatedTask);
   }
 
- return (
-    <>
-      <div className="main_container">
-        <h1 className="main_heading">Grocery Bud</h1>
+  // toggle night mode
+  function toggleNightMode() {
+    setNightMode((preMode) => !preMode);
+  }
+  
+
+  return (
+    <div className="main">
+      {/* header */}
+      <header className="main_header">
+        <h1>Grocery Bud</h1>
+        {/* toggole switch */}
+        <label class="switch">
+          <input
+            type="checkbox"
+            checked={nightMode}
+            onChange={toggleNightMode}
+          />
+          <span class="slider round"></span>
+        </label>
+      </header>
+      {/* todo task container */}
+      <div className="main_container" data-aos="zoom-out">
+        <h1 className="main_heading">Add Your Day to Day Task here !</h1>
 
         {/* add item input and button */}
         <div className="main_add_item">
           <input type="text" onChange={onChageTaskText} value={taskText} />
-          <button onClick={onClickAddItem} >Add Item</button>
+          <button onClick={onClickAddItem}>Add Item</button>
         </div>
 
         {/* show task div */}
@@ -113,7 +151,7 @@ const Main = () => {
         </ul>
       </div>
       <ToastContainer />
-    </>
+    </div>
   );
 };
 export default Main;
