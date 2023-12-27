@@ -24,7 +24,7 @@ const Main = () => {
       mainContainer.classList.remove("night_mode");
       console.log("remove");
     }
-  },[nightMode]);
+  }, [nightMode]);
 
   // toaster
   const showSucessMessage = () => {
@@ -98,7 +98,6 @@ const Main = () => {
   function toggleNightMode() {
     setNightMode((preMode) => !preMode);
   }
-  
 
   return (
     <div className="main">
