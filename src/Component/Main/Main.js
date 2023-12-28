@@ -19,10 +19,10 @@ const Main = () => {
     const mainContainer = document.body;
     if (nightMode) {
       mainContainer.classList.add("night_mode");
-      console.log("add");
+      // console.log("add");
     } else {
       mainContainer.classList.remove("night_mode");
-      console.log("remove");
+      // console.log("remove");
     }
   }, [nightMode]);
 
